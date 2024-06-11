@@ -8,7 +8,7 @@ const albumModel = (sequelize, Sequelize) => {
       artista: { 
         type: Sequelize.DataTypes.STRING 
       },
-      album: { 
+      titulo: { 
         type: Sequelize.DataTypes.STRING 
       },
       genero: { 

@@ -1,0 +1,33 @@
+@protocol = http
+@hostname = localhost
+@port = 3000
+@host = {{protocol}}://{{hostname}}:{{port}}
+@apiUrl = api/albums/
+@contentType = application/json
+
+
+### Recuperar todos los álbumes
+GET {{host}}/{{apiUrl}} HTTP/1.1
+
+### Recuperar un álbum por id
+GET {{host}}/{{apiUrl}}/2 HTTP/1.1
+
+### Crear un álbum
+POST {{host}}/{{apiUrl}} HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "titulo": "Nuevo Álbum",
+    "artista": "Nuevo Artista"
+}
+
+### Actualizar un álbum
+PUT {{host}}/{{apiUrl}}/58 HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "artista": "Artista Actualizado"
+}
+
+### Eliminar un álbum
+DELETE {{host}}/{{apiUrl}}/58 HTTP/1.1

@@ -1,0 +1,32 @@
+@protocol = http
+@hostname = localhost
+@port = 3000
+@host = {{protocol}}://{{hostname}}:{{port}}
+@apiUrl = api/generos/
+@contentType = application/json
+
+
+### Recuperar todos los géneros
+GET {{host}}/{{apiUrl}} HTTP/1.1
+
+### Recuperar un género por id
+GET {{host}}/{{apiUrl}}/2 HTTP/1.1
+
+### Crear un género
+POST {{host}}/{{apiUrl}} HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "nombre": "folklore"
+}
+
+### Actualizar un género
+PUT {{host}}/{{apiUrl}}/7 HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "nombre": "folklore actualizado"
+}
+
+### Eliminar un género
+DELETE {{host}}/{{apiUrl}}/7 HTTP/1.1

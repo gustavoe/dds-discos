@@ -17,7 +17,7 @@ app.use(express.json());
 
 const db = require('./app/app');
 
-db.sequelize.sync({force:true})
+db.sequelize.sync()
   .then(() => {
     console.log("Base de datos sincronizada");
     if (initData){
@@ -32,6 +32,9 @@ db.sequelize.sync({force:true})
 app.get('/', (req, res) => {
     res.json({mesage: 'Backend de DDiScos'});
 })
+
+require("./app/routes/album.routes")(app);
+require("./app/routes/genero.routes")(app);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
