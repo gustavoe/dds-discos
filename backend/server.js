@@ -3,6 +3,8 @@ const cors = require('cors');
 
 const app = express();
 
+const initData = process.argv.includes('--init-data');
+
 // cors: acepta peticiones de otro dominio
 const corsOptions = {
     origin: `http://localhost:${process.env.CLIENT_PORT}`
@@ -11,6 +13,21 @@ app.use(cors(corsOptions));
 
 // json: analiza peticiones con content-type - application/json
 app.use(express.json());
+
+
+const db = require('./app/app');
+
+db.sequelize.sync({force:true})
+  .then(() => {
+    console.log("Base de datos sincronizada");
+    if (initData){
+      db.init(db);
+    }
+  })
+  .catch((err) => {
+    console.log("Fallo al sincronizar la base de datos: " + err.message);
+  });
+
 
 app.get('/', (req, res) => {
     res.json({mesage: 'Backend de DDiScos'});
