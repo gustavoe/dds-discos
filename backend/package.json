@@ -1,4 +1,17 @@
 {
+  "name": "dds-discos-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env ./app",
+    "dev": "node --watch --env-file=.env  ./app",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "gustavoe",
+  "license": "ISC",
+  "description": "DDS DDiScos Backend",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",

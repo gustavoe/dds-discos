@@ -1,8 +1,8 @@
 @protocol = http
 @hostname = localhost
-@port = 3000
+@port = 3001
 @host = {{protocol}}://{{hostname}}:{{port}}
-@apiUrl = api/albums/
+@apiUrl = api/v1/albums/
 @contentType = application/json
 
 
@@ -18,7 +18,10 @@ content-type: {{contentType}}
 
 {
     "titulo": "Nuevo Álbum",
-    "artista": "Nuevo Artista"
+    "artista": "Nuevo Artista",
+    "genero": "rock",
+    "soporte": "cd",
+    "precio": 12.3
 }
 
 ### Actualizar un álbum
