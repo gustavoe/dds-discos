@@ -43,7 +43,35 @@ npm i express cors sqlite3 sequelize
 ```bash
 code .
 ```
-1.5. Nota sobre la nomenclatura: el plural en castellano de la palabra `álbum` es `álbumes` pero por simplicidad hemos preferido usar el plural en inglés, es decir: `albums` para los identificadores, rutas y archivos, mientras mantenemos el plural en español el los comentarios y mensajes.
+
+1.5. Vamos a instalar una dependencia de desarrollo que nos ayudará a mantener nuestro código correcto y formateado. Este tipo de herramientas se conocen como [`linters`](https://es.wikipedia.org/wiki/Lint). Como es una dependencia de desarrollo usamos el modificador `-D`
+
+```bash
+npm i standard -D
+```
+
+Acompañamos este cambio con un cambio en el archivo `package.json` para agregar la configuración.
+
+```json
+  "eslintConfig": {
+    "extends": "standard"
+  }
+```
+
+Y podemos modificar scripts de modo de ejecutarlos más facilmente para obtener un listado de errores de formato y, eventualmente corregirlos: 
+
+```json
+  "scripts": {
+    "start": "node --env-file=.env ./app",
+    "dev": "node --watch --env-file=.env  ./app",
+    "test": "standard",
+    "fix": "standard --fix"
+  },
+```
+
+También hay una extensión de VS Code que puede ser utilizada de forma alternativa para este propósito: [StandardJS](https://marketplace.visualstudio.com/items?itemName=standard.vscode-standard)
+
+1.6. Nota sobre la nomenclatura: el plural en castellano de la palabra `álbum` es `álbumes` pero por simplicidad hemos preferido usar el plural en inglés, es decir: `albums` para los identificadores, rutas y archivos, mientras mantenemos el plural en español el los comentarios y mensajes.
 
 
 #### Etapa 2: Creación del servidor con Express
@@ -335,9 +363,9 @@ app.use("/api/v1/generos", v1GeneroRouter);
 ...
 ```
 
-3.5. Vamos a usar el complemento de VS Code llamado REST Client para testear nuestras APIs manualmente. Podemos usar otras herramientas también como Bruno,  Postman, Imsomnia o Thunder Client. En este caso elegimos ésta por su simpleza y por que corre en el mismo entorno de desarrollo.
+3.5. Vamos a usar el complemento de VS Code llamado REST Client para testear nuestras APIs manualmente. Podemos usar otras herramientas también como [Yaak](https://yaak.app/), Bruno,  Postman, Imsomnia o Thunder Client. En este caso elegimos ésta por su simpleza y por que corre en el mismo entorno de desarrollo.
 
-Para esto, creamos dos archivos http con las peticiones que vamos a testear: `/http/albums.http` y `/http/generos.http`. Las peticiones están separadas entre si por `###`. Presionando <Ctrl> + <Alt> + <R> sobre cada petición, ésta será ejecutada contra el server (que debe estar funcionando)
+Para esto, creamos dos archivos http con las peticiones que vamos a testear: `/http/albums.http` y `/http/generos.http`. Las peticiones están separadas entre si por `###`. Presionando `[Ctrl]+[Alt]+[R]` sobre cada petición, ésta será ejecutada contra el server (que debe estar funcionando)
 
 El contenido del archivo `/http/albums.http`
 ```http
