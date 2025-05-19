@@ -1,14 +1,14 @@
 const generoModel = (sequelize, Sequelize) => {
-  return sequelize.define("genero", {
+  return sequelize.define('genero', {
     id: {
       type: Sequelize.DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     nombre: {
-      type: Sequelize.DataTypes.STRING,
-    },
-  });
-};
+      type: Sequelize.DataTypes.STRING
+    }
+  })
+}
 
-export default generoModel;
+export default generoModel

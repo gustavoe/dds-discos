@@ -62,9 +62,7 @@ Y podemos modificar scripts de modo de ejecutarlos más facilmente para obtener 
 
 ```json
   "scripts": {
-    "start": "node --env-file=.env ./app",
-    "dev": "node --watch --env-file=.env  ./app",
-    "test": "standard",
+    "test": "standard && echo \"Error: no test specified\" && exit 1",
     "fix": "standard --fix"
   },
 ```
@@ -136,7 +134,8 @@ Para hacer un poco mejor esta situación podemos agregar [npm scripts] (https://
 "scripts": {
   "start": "node ./index",
   "dev": "node --watch ./index",
-  "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "standard && echo \"Error: no test specified\" && exit 1",
+  "fix": "standard --fix"
 },
 ...
 
@@ -153,6 +152,13 @@ o iniciarlo de forma interactiva para el desarrollo con
 ```sh
 npm run dev
 ```
+
+o, en el caso de que estemos corriendo una versión de node.js superior a la 22
+
+```sh
+node --run dev
+```
+
 
 2.4. Vamos a extraer el valor del puerto de modo que, en vez de estar en duro en el código, esté en un archivo de entorno.
 

@@ -1,30 +1,30 @@
-import dbConfig from "./db.config.sqlite.js";
+import dbConfig from './db.config.sqlite.js'
 
-import Sequelize from "sequelize";
-const sequelize = new Sequelize(dbConfig);
+import Sequelize from 'sequelize'
 
-const db = {};
+import albumModel from '../models/album.model.js'
+import generoModel from '../models/genero.model.js'
+import dbSeed from './db.seed.js'
+const sequelize = new Sequelize(dbConfig)
 
-import albumModel from "../models/album.model.js";
-import generoModel from "../models/genero.model.js";
-import dbSeed from "./db.seed.js";
+const db = {}
 
-db.albums = albumModel(sequelize, Sequelize);
-db.generos = generoModel(sequelize, Sequelize);
+db.albums = albumModel(sequelize, Sequelize)
+db.generos = generoModel(sequelize, Sequelize)
 
 const init = async (force, seed) => {
   sequelize
-    .sync({ force: force })
+    .sync({ force })
     .then(() => {
-      console.log("Base de datos sincronizada");
+      console.log('Base de datos sincronizada')
       if (seed) {
-        dbSeed(db);
+        dbSeed(db)
       }
     })
     .catch((err) => {
-      console.log("Fallo al sincronizar la base de datos: " + err.message);
-    });
-};
+      console.log('Fallo al sincronizar la base de datos: ' + err.message)
+    })
+}
 
-db.init = init;
-export default db;
+db.init = init
+export default db
