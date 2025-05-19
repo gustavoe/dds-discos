@@ -3,7 +3,7 @@ import albumService from '../services/album.service.js'
 const getAllAlbums = async (req, res) => {
   const { genero } = req.query
   try {
-    const allAllbums = await albumService.getAllAlbums()
+    const allAllbums = await albumService.getAllAlbums(genero)
     res.send({ status: 'OK', data: allAllbums })
   } catch (error) {
     res
@@ -109,7 +109,7 @@ const deleteAlbum = async (req, res) => {
   }
 
   try {
-    const albumsEliminados = await albumService.deleteAlbum(id)
+    await albumService.deleteAlbum(id)
     res.status(204).send({ status: 'OK' })
   } catch (error) {
     res

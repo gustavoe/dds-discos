@@ -1,5 +1,4 @@
 import fs from 'fs'
-import Sequelize from 'sequelize'
 
 const albumsDataFile = fs.readFileSync('./src/database/seed/albums.json')
 const generosDataFile = fs.readFileSync('./src/database/seed/generos.json')
