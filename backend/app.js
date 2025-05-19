@@ -3,6 +3,7 @@ import cors from 'cors'
 
 import db from './src/database/db.init.js'
 
+import v1AuthRouter from './src/v1/routes/auth.routes.js'
 import v1AlbumRouter from './src/v1/routes/album.routes.js'
 import v1GeneroRouter from './src/v1/routes/genero.routes.js'
 
@@ -20,11 +21,13 @@ app.use(express.json())
 app.get('/', (req, res) => {
   res.json({ mesage: 'Backend de DDiScos' })
 })
+
+app.use('/api/v1/auth', v1AuthRouter)
 app.use('/api/v1/albums', v1AlbumRouter)
 app.use('/api/v1/generos', v1GeneroRouter)
 
 app.listen(PORT, () => {
-  db.init(true, true).then(() =>
+  db.init(false).then(() =>
     console.log(`💿 Servidor corriendo en el puerto ${PORT}`)
   )
 })

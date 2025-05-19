@@ -1,34 +1,34 @@
-import db from '../database/db.init.js'
+import Album from '../models/album.model.js'
 
 const getAllAlbums = async () => {
-  const allAlbums = await db.albums.findAll()
+  const allAlbums = await Album.findAll()
   return allAlbums
 }
 
 const getAlbum = async (id) => {
-  const album = await db.albums.findByPk(id)
+  const album = await Album.findByPk(id)
   return album
 }
 
 const createAlbum = async (nuevoAlbum) => {
-  const album = await db.albums.create(nuevoAlbum)
+  const album = await Album.create(nuevoAlbum)
   return album
 }
 
 const updateAlbum = async (id, cambios) => {
-  const albumsActualizados = await db.albums.update(cambios, {
+  const albumsActualizados = await Album.update(cambios, {
     where: { id }
   })
   if (albumsActualizados[0] !== 1) {
     throw new Error(`No se pudo actualizar el álbum con id: ${id}`)
   } else {
-    const albumActualizado = await db.albums.findByPk(id)
+    const albumActualizado = await Album.findByPk(id)
     return albumActualizado
   }
 }
 
 const deleteAlbum = async (id) => {
-  const albumsEliminados = await db.albums.destroy({
+  const albumsEliminados = await Album.destroy({
     where: { id }
   })
   if (albumsEliminados !== 1) {

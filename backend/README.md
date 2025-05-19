@@ -6,6 +6,7 @@ Ejemplo de aplicación web Node.js y React
 - [Etapa 3: Creación de la app y las rutas](#etapa-3-creación-de-la-app-y-las-rutas)
 - [Etapa 4: Base de Datos, Modelos y ORM](#etapa-4-base-de-datos-modelos-y-orm)
 - [Etapa 5: Servicios y controladores](#etapa-5-servicios-y-controladores)
+- [Etapa 6: Autenticación](#etapa-6-autenticación)
 
 ## Construcción del backend
 
@@ -78,13 +79,13 @@ También hay una extensión de VS Code que puede ser utilizada de forma alternat
 2.1. Creamos el archivo `app.js` en el cual vamos a codificar un servidor básico con Express
 
 ```javascript
-import express from "express";
+import express from "express"
 
-const app = express();
+const app = express()
 const PORT = 3000;
 
 app.get('/', (req, res) => {
-    res.json({mesage: 'Backend de DDiScos'});
+    res.json({message: 'Backend de DDiScos'})
 })
 
 app.listen(PORT, () => {
@@ -110,7 +111,7 @@ y luego podemos usar la consola para probarlo
 
 ```bash
 curl http://localhost:3000
-{"mesage":"Backend de DDiScos"}%
+{"message":"Backend de DDiScos"}%
 ```
 
 o también un navegador y tipeamos `http://localhost:3000` en la caja de direcciones en donde deberíamos ver algo similar al mensaje de la consola.
@@ -205,25 +206,25 @@ también podemos incorporar esta opción en los scripts de nuestro `package.json
 Por el momento el código de `app.js` queda así
 
 ```js
-import express from "express";
-import cors from "cors";
+import express from "express"
+import cors from "cors"
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express()
+const PORT = process.env.PORT || 3000
 
 // middleware
 const corsOptions = {
   origin: `http://localhost:${process.env.CLIENT_PORT}`,
 };
-app.use(cors(corsOptions));
-app.use(express.json());
+app.use(cors(corsOptions))
+app.use(express.json())
 
 app.get("/", (req, res) => {
-  res.json({ mesage: "Backend de DDiScos" });
+  res.json({ message: "Backend de DDiScos" })
 });
 
 app.listen(PORT, () => {
-  console.log(`💿 Servidor corriendo en el puerto ${PORT}`);
+  console.log(`💿 Servidor corriendo en el puerto ${PORT}`)
 });
 ```
 
@@ -997,3 +998,8 @@ router.delete("/:id", albumController.deleteAlbum);
 
 export default router;
 ```
+
+#### Etapa 6: Autenticación
+---
+
+6.1. Vamos a crear un modelo para la entidad que usaremos para persistir los usuarios. Vamos a crear un modelo simple con 

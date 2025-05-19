@@ -1,7 +1,7 @@
-import db from '../database/db.init.js'
+import Genero from '../models/genero.model.js'
 
 const getAllGeneros = async () => {
-  const allGeneros = await db.generos.findAll()
+  const allGeneros = await Genero.findAll()
   return allGeneros
 }
 
