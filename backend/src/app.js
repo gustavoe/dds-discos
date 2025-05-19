@@ -1,11 +1,11 @@
 import express from 'express'
 import cors from 'cors'
 
-import db from './src/database/db.init.js'
+import db from './database/db.init.js'
 
-import v1AuthRouter from './src/v1/routes/auth.routes.js'
-import v1AlbumRouter from './src/v1/routes/album.routes.js'
-import v1GeneroRouter from './src/v1/routes/genero.routes.js'
+import v1AuthRouter from './v1/routes/auth.routes.js'
+import v1AlbumRouter from './v1/routes/album.routes.js'
+import v1GeneroRouter from './v1/routes/genero.routes.js'
 
 const app = express()
 const PORT = process.env.PORT || 3000
