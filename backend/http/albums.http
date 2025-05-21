@@ -9,6 +9,10 @@
 ### Recuperar todos los álbumes
 GET {{host}}/{{apiUrl}} HTTP/1.1
 
+### Recuperar todos los álbumes
+GET {{host}}/{{apiUrl}} HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJuZG9taW5ndWV6IiwiZW1haWwiOiJuZG9taW5ndWV6QG1haWwuY29tIiwiaWF0IjoxNzQ3Nzk4OTEzLCJleHAiOjE3NDc4MzQ5MTN9.Qppm_92MgAjIrjq2gKCIOCUaIip6F3r_L6PBvRNWAbk
+
 ### Recuperar un álbum por id
 GET {{host}}/{{apiUrl}}/2 HTTP/1.1
 

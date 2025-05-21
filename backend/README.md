@@ -53,7 +53,7 @@ npm i standard -D
 
 Acompañamos este cambio con un cambio en el archivo `package.json` para agregar la configuración.
 
-```json
+```javascripton
   "eslintConfig": {
     "extends": "standard"
   }
@@ -61,7 +61,7 @@ Acompañamos este cambio con un cambio en el archivo `package.json` para agregar
 
 Y podemos modificar scripts de modo de ejecutarlos más facilmente para obtener un listado de errores de formato y, eventualmente corregirlos: 
 
-```json
+```javascripton
   "scripts": {
     "test": "standard && echo \"Error: no test specified\" && exit 1",
     "fix": "standard --fix"
@@ -95,7 +95,7 @@ app.listen(PORT, () => {
 
 Cómo estamos usando [ESModules](https://nodejs.org/api/esm.html) necesitamos que Node.js interprete los módulos de esa manera. Para esto vamos a editar nuestro archivo `package.json` agregando en el nivel superior el campo `type` con el valor `"module"`:
 
-```json
+```javascripton
 ...
 "type": "module",
 ...
@@ -130,7 +130,7 @@ node --watch app.js
 
 Para hacer un poco mejor esta situación podemos agregar [npm scripts] (https://docs.npmjs.com/cli/v10/commands/npm-run-script). Uno para iniciar el servidor y otro para iniciarlo de forma interactiva. El nodo `scripts` del `package.json` queda:
 
-```json
+```javascripton
 ...
 "scripts": {
   "start": "node ./index",
@@ -178,7 +178,7 @@ CLIENT_PORT=3002
 
 En `app.js` cambiamos la línea en la que asignamos el puerto por
 
-```js
+```javascript
 const PORT = process.env.PORT || 3000;
 ```
 
@@ -190,7 +190,7 @@ node --env-file=.env app.js
 
 también podemos incorporar esta opción en los scripts de nuestro `package.json`
 
-```json
+```javascripton
 "scripts": {
   "start": "node --env-file=.env ./app",
   "dev": "node --watch --env-file=.env  ./app",
@@ -205,7 +205,7 @@ también podemos incorporar esta opción en los scripts de nuestro `package.json
 
 Por el momento el código de `app.js` queda así
 
-```js
+```javascript
 import express from "express"
 import cors from "cors"
 
@@ -294,7 +294,7 @@ mkdir -p src/{database,controllers,models,services,v1/routes}
 3.3. Comenzaremos, entonces, por escribir las rutas de la `v1` de nuestra API. Para eso vamos a crear dos archivos en la carpeta `/src/v1/routes`: `album.routes.js`, `genero.routes.js`
 
 `/src/v1/routes/album.routes.js`
-```js
+```javascript
 import { Router } from "express";
 
 const router = Router();
@@ -328,7 +328,7 @@ export default router;
 ```
 
 `/src/v1/routes/genero.routes.js`
-```js
+```javascript
 import { Router } from "express";
 
 const router = Router();
@@ -363,7 +363,7 @@ export default router;
 
 3.4. Necesitamos agregar las rutas usando el router de Express, para eso agregamos las siguientes líneas en `app.js`
 
-```js
+```javascript
 ...
 app.use("/api/v1/albums", v1AlbumRouter);
 app.use("/api/v1/generos", v1GeneroRouter);
@@ -458,7 +458,7 @@ El resultado esperado es obtener `200 OK` como status para cada una de las petic
 4.2. Comenzamos creando un archivo que contendrá la configuración de la base de datos. En este caso estamos usando Sqlite, pero podríamos crear configuraciones para otras bases de datos y cambiar entre ellas de ser necesario.
 
 `src/database/db.config.sqlite.js`
-```js
+```javascript
 const dbConfig = {
   dialect: "sqlite",
   storage: process.env.DB_LOCATION || "./data/discos.db",
@@ -473,7 +473,7 @@ El valor de `logging` determina si Sequelize muestra por consola la salida de la
 4.3. En otro archivo `db.init.js` vamos a escribir el código que nos permita inicializar el acceso a datos usando Sequelize. Vamos a hacer esto invocando al método `sync` que sincroniza la estructura de la base de datos con el modelo definido. Si pasamos true como parámetro se forzará esta sincronización. Más adelante haremos que este parámetro sea configurable.
 
 `src/database/db.init.js`
-```js
+```javascript
 import dbConfig from "./db.config.sqlite.js";
 
 import Sequelize from "sequelize";
@@ -498,7 +498,7 @@ export default db;
 
 Necesitamos invocar el método `init` cuando iniciamos el servidor, de modo que vamos a incluir estas líneas en el archivo `app.js`
 
-```js
+```javascript
 ...
 import db from './src/database/db.init.js'
 ...
@@ -515,7 +515,7 @@ Si, en este punto, iniciamos el servidor, se creará la base de datos si no exis
 4.4. Vamos a crear los modelos de las dos entidades con las que vamos a trabajar `albums` y `generos` en los archivos `src/models/album.model.js` y `src/models/genero.model.js`
 
 `src/models/album.model.js`
-```js
+```javascript
 const albumModel = (sequelize, Sequelize) => {
   return sequelize.define(
     "album",
@@ -558,7 +558,7 @@ export default albumModel;
 ```
 
 `src/models/genero.model.js`
-```js
+```javascript
 const generoModel = (sequelize, Sequelize) => {
   return sequelize.define(
     "genero",
@@ -585,7 +585,7 @@ export default generoModel;
 
 E incluimos los imports y llamadas correspondientes en el archivo `db.init.js`
 
-```js
+```javascript
 import albumModel from "../models/album.model.js";
 import generoModel from "../models/genero.model.js";
 
@@ -597,11 +597,11 @@ db.generos = generoModel(sequelize, Sequelize);
 Si, nuevamente iniciamos el servidor, se crearán las tablas correspondientes a los dos modelos definidos.
 
 4.5. Finalmente vamos a crear algunos datos iniciales valiéndonos de dos archivos JSON que contienen datos de álbumes y géneros respectivamente.
-Como estamos usando ES Modules no tenemos la misma facilidad para incorporar archivos JSON que con CommonJS Modules en el momento de escribir esta guía. Una de las alternativas es usar el módulo `fs`, leer el archivo JSON y luego parsearlo a JSON con `JSON.parse()`. Vamos a escribir un módulo con un método `seed()` que nos permita inicializar las tablas con datos. Esta operación va a sobrescribir los datos y cambios existentes, por lo tanto no la querremos invocar cada vez que iniciemos el servidor. De modo que tendremos un parámetro booleano para indicar si queremos o no inicializar los datos.
+Como estamos usando ES Modules no tenemos la misma facilidad para incorporar archivos JSON que con CommonJS Modules en el momento de escribir esta guía. Una de las alternativas es usar el módulo `fs`, leer el archivo JSON y luego parsearlo a JSON con `javascriptON.parse()`. Vamos a escribir un módulo con un método `seed()` que nos permita inicializar las tablas con datos. Esta operación va a sobrescribir los datos y cambios existentes, por lo tanto no la querremos invocar cada vez que iniciemos el servidor. De modo que tendremos un parámetro booleano para indicar si queremos o no inicializar los datos.
 
 El archivo `src/database/db.seed.js` queda así:
 
-```js
+```javascript
 import fs from "fs";
 
 const albumsDataFile = fs.readFileSync("./src/database/seed/albums.json");
@@ -627,7 +627,7 @@ Vamos a agregar dos parámetros al método `init()` que ya escribimos. Uno de el
 
 El archivo `src/database/db.init.js` queda ahora
 
-```js
+```javascript
 import dbConfig from "./db.config.sqlite.js";
 
 import Sequelize from "sequelize";
@@ -664,7 +664,7 @@ export default db
 
 El archivo `src/database/db.seed.js` queda así:
 
-```js
+```javascript
 import fs from "fs";
 import Sequelize from "sequelize";
 
@@ -710,7 +710,7 @@ export default seed;
 5.1. Ya implementada la capa de acceso a datos vamos a implementar las capas de servicios y controladores. Lo vamos a hacer en ese órden y vamos a comenzar con *géneros*, cuya interfaz es más sencilla.
 El archivo `src/services/genero.service.js` queda:
 
-```js
+```javascript
 import db from "../database/db.init.js";
 
 const getAllGeneros = async () => {
@@ -729,7 +729,7 @@ export default {
 
 El controller de género implementado en `src/controllers/genero.controller.js`
 
-```js
+```javascript
 import generoService from "../services/genero.service.js";
 
 const getAllGeneros = async (req, res) => {
@@ -751,7 +751,7 @@ export default {
 
 Finalmente modificamos el router para asociar la ruta a este controller. El archivo `src/v1/routes/genero.routes.js` queda:
 
-```js
+```javascript
 import { Router } from "express";
 import generoController from "../../controllers/genero.controller.js";
 
@@ -773,7 +773,7 @@ Ya podemos probar el endpoint usando REST Client u otra herramienta.
 
 El archivo `src/services/album.service.js` queda:
 
-```js
+```javascript
 import db from "../database/db.init.js";
 
 const getAllAlbums = async () => {
@@ -843,7 +843,7 @@ export default {
 
 El controller `src/controllers/album.controller.js`
 
-```js
+```javascript
 import albumService from "../services/album.service.js";
 
 const getAllAlbums = async (req, res) => {
@@ -975,7 +975,7 @@ export default {
 
 El archivo de router `src/v1/routes/album.routes.js` queda:
 
-```js
+```javascript
 import { Router } from "express";
 import albumController from "../../controllers/album.controller.js";
 
@@ -1002,4 +1002,311 @@ export default router;
 #### Etapa 6: Autenticación
 ---
 
-6.1. Vamos a crear un modelo para la entidad que usaremos para persistir los usuarios. Vamos a crear un modelo simple con 
+6.1. Vamos a crear un modelo para la entidad que usaremos para los usuarios. Vamos a crear un modelo simple con tres campos: `username`, `email` y `password`
+
+El modelo `src/models/user.model.js` queda:
+
+```javascript
+import { DataTypes } from 'sequelize'
+import db from '../database/db.init.js'
+
+const User = db.sequelize.define(
+  'user',
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      len: [5, 20]
+    },
+    email: {
+      type: DataTypes.STRING,
+      isEmail: true,
+      allowNull: false,
+      unique: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
+  },
+  {
+    tableName: 'users',
+    timestamps: false
+  }
+)
+
+export default User
+```
+
+6.2. En la capa de servicios de autenticación vamos a considerar inicialmente tres funciones: `register` y `login` 
+
+El servicio *auth* `src/services/auth.service.js` queda:
+
+```javascript
+import User from '../models/user.model.js'
+
+const register = async () => {
+}
+
+const login = async () => {
+}
+
+export default {
+  register,
+  login
+}
+```
+
+e implementamos el método `register`
+
+```javascript
+const register = async (username, email, password) => {
+  const datosUser = {
+    username,
+    email,
+    password
+  }
+  const user = await User.create(datosUser)
+  return user
+}
+```
+
+6.3. Yendo de abajo hacia arriba, ahora creamos el controller: `/src/controllers/auth.controller.js`
+
+```javascript
+import authService from '../services/auth.service.js'
+
+const register = async (req, res) => {
+  const { username, email, password } = req.body
+
+  try {
+    const user = await authService.register(username, email, password)
+    res.status(201).send({ status: 'OK', data: user })
+  } catch (error) {
+    res.status(400)
+      .send({ status: 'FAILED', data: { error: error?.message || error } })
+  }
+}
+
+const login = async (req, res) => {}
+
+
+export default {
+  register,
+  login
+}
+```
+
+6.4. y el router `/src/v1/routes/auth.routes.js`
+
+```javascript
+import { Router } from 'express'
+import authController from '../../controllers/auth.controller.js'
+
+const router = Router()
+
+// Registrar un usuario
+router.post('/register', authController.register)
+
+// Autenticar un usuario
+router.post('/login', authController.login)
+
+export default router
+```
+
+que además debemos registrar en el servidor `app.js`
+
+```javascript
+...
+app.use('/api/v1/auth', v1AuthRouter)
+...
+```
+
+Finalmente agregamos un archivo `.http` y podemos probar el registrar con la herramienta que venimos usando (o alguna de las alternativas)
+
+El archivo `/src/http/auth.http` queda:
+
+```http
+@protocol = http
+@hostname = localhost
+@port = 3001
+@host = {{protocol}}://{{hostname}}:{{port}}
+@apiUrl = api/v1/auth/
+@contentType = application/json
+
+### Registrar un usuario
+POST {{host}}/{{apiUrl}}register HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "username": "rpasos",
+    "email": "rpasos@mail.com",
+    "password": "Secreto123"
+}
+```
+
+6.5. Después de un par de pruebas registrando usuarios y observando directamente los registros insertados en la base de datos, podemos observar que el *password* se está almacenando en texto plano. Esto constituye una [vulnerabilidad](https://owasp-org.translate.goog/www-community/vulnerabilities/Password_Plaintext_Storage?_x_tr_sl=en&_x_tr_tl=es&_x_tr_hl=es&_x_tr_pto=tc) y, por tanto, una práctica inadmisible desde el punto de vista de la seguridad. 
+
+Vamos a subsanar ese problema y, para eso primero nos valdremos de una dependencia que nos ayudará a encriptar las contraseñas. Instalamos la dependencia:
+
+```bash
+npm i bcrypt
+```
+
+y luego modificamos la implementación del método en la capa de servicios para guardar el password hasheado.
+
+```javascript
+import bcrypt from 'bcrypt'
+import User from '../models/user.model.js'
+
+const register = async (username, email, password) => {
+  const passwordHashed = await bcrypt.hash(password, 10)
+  const datosUser = {
+    username,
+    email,
+    password: passwordHashed
+  }
+  const user = await User.create(datosUser)
+  return user
+}
+...
+```
+
+6.5. A continuación implementaremos el método login. En este método también tenemos que utilizar `bcrypt` ya que tenemos password hasheado guardado en la base de datos.
+
+En el service, la implementación queda así:
+
+```javascript
+const login = async (username, password) => {
+  const user = await User.findOne({ where: { username } })
+  if (!user) {
+    throw new Error('¡Credenciales inválidas!')
+  }
+  const loggedIn = await bcrypt.compare(password, user.password)
+  if (!loggedIn) {
+    throw new Error('¡Credenciales inválidas!')
+  }
+  const { password: _, ...datosUser } = user.dataValues
+  return datosUser
+}
+```
+
+Hay que notar que no retornamos el password hasheado del objeto que el método retorna. Por otra parte, usamos un mensaje genérico *Credenciales inválidas* para no dar información adicional acerca de porqué la autenticación no tuvo éxito.
+
+En el controller vamos a enviar una respuesta acorde al resultado del proceso.
+
+```javascript
+const login = async (req, res) => {
+  const { username, password } = req.body
+
+  try {
+    const user = await authService.login(username, password)
+    res.status(200).send({ status: 'OK', data: user })
+  } catch (error) {
+    res.status(401)
+      .send({ status: 'FAILED', data: { error: error?.message || error } })
+  }
+}
+```
+
+Finalmente probamos con dos peticiones, una usando las credenciales correctas y otra para que falle la autenticación:
+
+```http
+### Autenticar un usuario
+POST {{host}}/{{apiUrl}}login HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "username": "ndominguez",
+    "password": "Secreto123"
+}
+
+### Autenticar un usuario
+POST {{host}}/{{apiUrl}}login HTTP/1.1
+content-type: {{contentType}}
+
+{
+    "username": "ndominguez",
+    "password": "Incorrecto123"
+}
+```
+
+6.6. En este paso vamos a hacer que el método `login` devuelva un token [JWT](https://jwt.io/) en vez de un objeto.
+
+En primer lugar vamos a instalar la dependencia [`jsonwebtoken`](https://www.npmjs.com/package/jsonwebtoken)
+
+```bash
+npm i jsonwebtoken
+```
+
+Y en la función `login` del controller vamos a devolver el token en vez del usuario
+
+```javascript
+const login = async (req, res) => {
+  const { username, password } = req.body
+
+  try {
+    const user = await authService.login(username, password)
+    const secret = process.env.JWT_SECRET
+    const token = jwt.sign(user, secret, { expiresIn: '10h' })
+    res.status(200).send({ token })
+  } catch (error) {
+    res.status(401)
+      .send({ status: 'FAILED', data: { error: error?.message || error } })
+  }
+}
+```
+
+6.7. Ahora vamos a escribir una función que usaremos como middleware para validar el token. En el archivo `/src/middleware/verifytoken.js`
+
+```javascript
+import jwt from 'jsonwebtoken'
+
+const verifyToken = (req, res, next) => {
+  const header = req.header('Authorization') || ''
+  const token = header.split(' ')[1]
+  if (!token) {
+    res.status(401).send({ message: 'No autorizado' })
+  }
+  try {
+    const secret = process.env.JWT_SECRET
+    const payload = jwt.verify(token, secret)
+    req.username = payload.username
+    next()
+  } catch (error) {
+    res.status(401).send({ message: 'No autorizado' })
+  }
+}
+
+export default verifyToken
+```
+
+Y lo usaremos en las rutas que queremos proteger, por ejemplo:
+
+```javascript
+import { Router } from 'express'
+import albumController from '../../controllers/album.controller.js'
+import verifyToken from '../../middleware/verifytoken.js'
+
+const router = Router()
+
+// Recuperar todos los álbumes
+router.get('/', verifyToken, albumController.getAllAlbums)
+```
+
+finalmente comprobamos usando el token obtenido en la petición anterior
+
+```http
+### Recuperar todos los álbumes
+GET {{host}}/{{apiUrl}} HTTP/1.1
+
+### Recuperar todos los álbumes
+GET {{host}}/{{apiUrl}} HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJuZG9taW5ndWV6IiwiZW1haWwiOiJuZG9taW5ndWV6QG1haWwuY29tIiwiaWF0IjoxNzQ3Nzk4OTEzLCJleHAiOjE3NDc4MzQ5MTN9.Qppm_92MgAjIrjq2gKCIOCUaIip6F3r_L6PBvRNWAbk
+```

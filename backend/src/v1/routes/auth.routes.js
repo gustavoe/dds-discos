@@ -4,12 +4,9 @@ import authController from '../../controllers/auth.controller.js'
 const router = Router()
 
 // Registrar un usuario
-router.get('/register', authController.register)
+router.post('/register', authController.register)
 
 // Autenticar un usuario
-router.get('/login', authController.login)
-
-// Cerrar la sesión
-router.post('/logout', authController.logout)
+router.post('/login', authController.login)
 
 export default router

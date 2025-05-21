@@ -13,7 +13,7 @@ const User = db.sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      len: [3, 20]
+      len: [5, 20]
     },
     email: {
       type: DataTypes.STRING,
